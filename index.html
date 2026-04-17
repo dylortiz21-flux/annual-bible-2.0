@@ -350,6 +350,40 @@ function closeBanner(){
 
 // Initial render
 renderAll();
+ function getHoy(){
+  return new Date().toISOString().split("T")[0];
+}
+
+function updateStreak(){
+  let streak=parseInt(localStorage.getItem("streak")||"0");
+  let lastDay=localStorage.getItem("lastDay");
+  let hoy=getHoy();
+
+  if(lastDay!==hoy){
+    let ayer=new Date();
+    ayer.setDate(ayer.getDate()-1);
+    ayer=ayer.toISOString().split("T")[0];
+
+    if(lastDay===ayer){streak++;}else{streak=1;}
+
+    localStorage.setItem("streak",streak);
+    localStorage.setItem("lastDay",hoy);
+  }
+
+  // mostrar en header
+  let el=document.getElementById("streak");
+  if(!el){
+    const div=document.createElement("div");
+    div.id="streak";
+    div.style.fontSize="12px";
+    div.style.color="#56d364";
+    div.style.marginTop="6px";
+    document.querySelector(".header").appendChild(div);
+    el=div;
+  }
+
+  el.textContent="🔥 Racha: "+streak+" días";
+}
 </script>
 </body>
 </html>
